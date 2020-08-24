@@ -23,6 +23,8 @@ Creating dkr_webserver ... done
 Creating dkr_app        ... done
 Creating dkr_phpmyadmin ... done
 ```
+That's all 😁
+
 `Note:` It may take few minutes to start when you run it first time because it downlaods images
 
 ## URL to acesss DKR after starting
