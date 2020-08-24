@@ -13,16 +13,17 @@
  - PHPmyadmin
 ```
 
-## How to start DKR
-
+## How it works
 ```
+$ git clone https://github.com/simaranjit/dkr.git
+$ cd dkr
 $ docker-compose up -d
-Creating network "dkr_dkr-network" with driver "bridge"
 Creating dkr_db        ... done
 Creating dkr_webserver ... done
 Creating dkr_app        ... done
 Creating dkr_phpmyadmin ... done
 ```
+`Note:` It may take few minutes to start when you run it first time because it downlaods images
 
 ## URL to acesss DKR after starting
 http://localhost
