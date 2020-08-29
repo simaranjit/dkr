@@ -13,7 +13,7 @@ services:
       SERVICE_TAGS: dev
     working_dir: /var/www
     volumes:
-       - ./websites:/var/www
+       - ./www:/var/www
        - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - dkr-network
@@ -30,7 +30,7 @@ services:
     networks:
       - dkr-network
     volumes:
-      - ./websites:/var/www
+      - ./www:/var/www
       - ./nginx/conf.d/:/etc/nginx/conf.d/
 
   #MySQL Service

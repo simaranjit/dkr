@@ -17,7 +17,7 @@
 
   <h2>Working Directory:</h2>
 
-  <p>./websites/</p>
+  <p>./www/</p>
 
   <h2>MySQL Credentials:</h2>
 
@@ -31,7 +31,7 @@
 
   <h2>Where to put PHP files:</h2>
 
-  <p>Create your folder/files under ./websites directory, like ./websites/mywebsite/index.php and access that using http://localhost/mywebsite/index.php</p>
+  <p>Create your folder/files under ./www directory, like ./www/mywebsite/index.php and access that using http://localhost/mywebsite/index.php</p>
 
   <h2>Access PHP.ini:</h2>
 

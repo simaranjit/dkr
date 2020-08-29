@@ -44,9 +44,9 @@ password: password
 ./php/local.ini
 
 ## PHP Working directory
-`./websites`
+`./www`
 
-Put all your PHP files and folders under `./websites/` directory. For example if you want to create a new project called `myproject`, create that like this `./websites/myproject` and create `index.php` under that.
+Put all your PHP files and folders under `./www/` directory. For example if you want to create a new project called `myproject`, create that like this `./www/myproject` and create `index.php` under that.
 Now access project like http://localhost/myproject/index.php
 
 ## How to create VirtualHosts
