@@ -68,6 +68,14 @@ Removing network dkr_dkr-network
 
 ### DKR CLI
 DKR has a built in CLI to provide easy support with the below commands (dkr)
+
+Syntax 
+`php dkr {command}`
+
+Example 
+`php dkr start`
+
+Supported commands
 ```
 start -> To start the server. E.g. php dkr start
 stop -> To stop the server. E.g. php dkr stop
@@ -76,5 +84,4 @@ rebuild -> To rebuild the server. E.g. php dkr rebuild
 vhost:create -> To create virtual host. E.g. php dkr vhost:create domain.com
 vhost:delete -> To delete the virtual host. E.g. dkr vhost:delete domain.com
 vhost:remove -> Alias to delete the virtual host. E.g. dkr vhost:remove domain.com
-
 ```
