@@ -38,7 +38,10 @@ function createDomain($domain)
     mkdir($logsDirectoryPath);
     file_put_contents($vhostConfFilePath, $templateFileContent);
 
-    writeLine("Done!");
+    writeLine("Configuration file creation (Done): $vhostConfFilePath");
+    writeLine("Virtual host directory creation(Done): $vhostDirectoryPath put your PHP files here");
+    writeLine("Logs (Access and Error) directory creation Done): $logsDirectoryPath");
+    writeLine("Success!");
 }
 
 function deleteDomain($domain)
@@ -59,7 +62,9 @@ function deleteDomain($domain)
     unlink($vhostConfFilePath);
     exec("rm -rf $vhostDirectoryPath");
 
-    writeLine("Done!");
+    writeLine("Removed configuration file $vhostConfFilePath");
+    writeLine("Removed virtual host directory $vhostDirectoryPath");
+    writeLine("Success!");
 }
 
 function help() {
@@ -99,14 +104,23 @@ switch ($argument) {
         $domain = arg(2);
         createDomain($domain);
 
+        writeLine("Restarting Services");
+        exec("docker-compose down");
+        exec("docker-compose up -d");
         break;
     case 'vhost:delete':
     case 'vhost:remove':
         $domain = arg(2);
         deleteDomain($domain);
 
+        writeLine("Restarting Services");
+        exec("docker-compose down");
+        exec("docker-compose up -d");
+
         break;
     default:
         throw new Exception("Command not found");
         break;
 }
+
+exit;
