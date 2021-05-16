@@ -1,0 +1,112 @@
+#!/bin/bash/php
+<?php
+
+function arg($key)
+{
+    global $argv;
+
+    return $argv[$key] ?? null;
+}
+
+function writeLine($line) {
+  echo $line."\n";
+}
+
+function createDomain($domain)
+{
+    if (empty($domain)) {
+        throw new Exception("Please enter domain. Example `php server.php vhost:create domain.com`");
+    }
+
+    $vhostConfFilePath  = 'nginx/conf.d/' . $domain . '.conf';
+    $vhostDirectoryPath = 'www/' . $domain;
+    $rootDirectoryPath  = $vhostDirectoryPath . '/httpdocs';
+    $logsDirectoryPath  = 'www/' . $domain . '/logs';
+    $errorLogFilePath   = $logsDirectoryPath . '/error.log';
+    $accessLogFilePath  = $logsDirectoryPath . '/access.log';
+
+    if (file_exists($vhostConfFilePath)) {
+        throw new Exception("Virtual host configuratin file already exists: $vhostConfFilePath");
+    } else if (is_dir($vhostDirectoryPath)) {
+        throw new Exception("Virtual host directory already exists: $vhostDirectoryPath");
+    }
+
+    $templateFileContent = str_replace(['{{$errorLogPath}}', '{{$accessLogPath}}', '{{$rootPath}}'], ['/var/' . $errorLogFilePath, '/var/' . $accessLogFilePath, '/var/' . $rootDirectoryPath], file_get_contents('nginx/conf.d/.template'));
+
+    mkdir($vhostDirectoryPath);
+    mkdir($rootDirectoryPath);
+    mkdir($logsDirectoryPath);
+    file_put_contents($vhostConfFilePath, $templateFileContent);
+
+    writeLine("Done!");
+}
+
+function deleteDomain($domain)
+{
+    if (empty($domain)) {
+        throw new Exception("Please enter domain. Example `php server.php vhost:delete domain.com`");
+    }
+
+    $vhostConfFilePath  = 'nginx/conf.d/' . $domain . '.conf';
+    $vhostDirectoryPath = 'www/' . $domain;
+
+    if (!file_exists($vhostConfFilePath)) {
+        throw new Exception("Virtual host configuratin file not found: $vhostConfFilePath");
+    } else if (!is_dir($vhostDirectoryPath)) {
+        throw new Exception("Virtual host directory not found: $vhostDirectoryPath");
+    }
+
+    unlink($vhostConfFilePath);
+    exec("rm -rf $vhostDirectoryPath");
+
+    writeLine("Done!");
+}
+
+function help() {
+  writeLine("");
+  writeLine("start -> To start the server. E.g. php server start");
+  writeLine("stop -> To stop the server. E.g. php server stop");
+  writeLine("restart -> To restart the server. E.g. php server restart");
+  writeLine("rebuild -> To rebuild the server. E.g. php server rebuild");
+  writeLine("vhost:create -> To create virtual host. E.g. php server vhost:create domain.com");
+  writeLine("vhost:delete -> To delete the virtual host. E.g. server vhost:delete domain.com");
+  writeLine("vhost:remove -> Alias to delete the virtual host. E.g. server vhost:remove domain.com");
+  writeLine("");
+}
+
+$argument = arg(1);
+
+switch ($argument) {
+    case 'start':
+        exec('docker-compose up -d');
+        break;
+    case '--help':
+        help();
+        break;
+    case 'stop':
+        exec('docker-compose down');
+        break;
+    case 'restart':
+        exec('docker-compose down');
+        exec('docker-compose up -d');
+        break;
+    case 'rebuild':
+        exec('docker-compose down');
+
+        exec('docker-compose up -d --build');
+        break;
+    case 'vhost:create':
+        $domain = arg(2);
+        createDomain($domain);
+
+        break;
+    case 'vhost:delete':
+    case 'vhost:remove':
+        $domain = arg(2);
+        deleteDomain($domain);
+
+        break;
+    default:
+        throw new Exception("Command not found");
+        break;
+}
